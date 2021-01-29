@@ -7,7 +7,7 @@ dict_tags = {}
 #dict_tags["Key"] = "map-migrated"
 #dict_tags["Value"] = "d-server-00l6aags6i42uj"
 dict_tags["Key"] = os.environ.get("tag_key")
-dict_tags["Value"] = os.environ.get("tag_key")
+dict_tags["Value"] = os.environ.get("tag_value")
 
 list_tags = []
 list_tags.append(dict_tags)
@@ -55,16 +55,13 @@ def tag_elb():
     elbs = elb_client.describe_load_balancers()
     elb_list = elbs["LoadBalancers"] 
 
+    print("---------------------------ELB-----------------------------")
     for elb in elb_list:
         elb_client.add_tags(ResourceArns=[elb["LoadBalancerArn"]], Tags=list_tags)
         elb_tags = elb_client.describe_tags(ResourceArns=[elb["LoadBalancerArn"]])
-
-
-        print("-----------------------EBS Volumes-------------------------")
-        for elb_tag in elb_tags:
-                print("elb arn: ", (elb_tag["TagDescriptions"][0]["ResourceArn"], " volume tags: ", elb_tag["TagDescriptions"][0]["Tags"]))
-                print("")
-        print("-------------------------------------------------------------")
+        print (elb_tags)
+        print ("")
+    print("-------------------------------------------------------------")
 
 
 def tag_rds():
